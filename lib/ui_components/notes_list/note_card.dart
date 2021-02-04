@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pnote/bloc/note.dart';
+import 'package:pnote/shared/utils.dart';
 import 'package:pnote/ui_components/mood_image.dart';
 import 'package:superellipse_shape/superellipse_shape.dart';
 
@@ -31,7 +32,7 @@ class NoteCard extends StatelessWidget {
           ],
         ),
         subtitle: Text(
-          note.noteText,
+          getOneLineString(note.noteText),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),

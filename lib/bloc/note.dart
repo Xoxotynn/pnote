@@ -1,3 +1,5 @@
+import 'package:pnote/database/database_constants.dart';
+import 'package:pnote/note_string_converter/string_note_codec.dart';
 import 'package:pnote/shared/constants.dart';
 import 'package:pnote/database/note_model.dart';
 
@@ -18,6 +20,10 @@ class Note {
     _initializeNoteFromNoteModel(noteModel);
   }
 
+  Note.fromString(String data) {
+    _initializeNoteFromString(data);
+  }
+
   void _initializeEmptyNote() {
     DateTime currentDate = DateTime.now();
     mood = kDefaultMood;
@@ -35,6 +41,17 @@ class Note {
     sleepTime = _getDateFromString(noteModel.sleepTime);
     sleepLength = noteModel.sleepLength;
     noteText = noteModel.noteText;
+  }
+
+  void _initializeNoteFromString(String data) {
+    final noteMapData = stringNote.decode(data);
+    id = noteMapData[Column.id.name];
+    mood = noteMapData[Column.mood.name];
+    date = noteMapData[Column.date.name];
+    wakeupTime = noteMapData[Column.wakeupTime.name];
+    sleepTime = noteMapData[Column.sleepTime.name];
+    sleepLength = noteMapData[Column.sleepLength.name];
+    noteText = noteMapData[Column.noteText.name];
   }
 
   NoteModel toNoteModel() {
@@ -94,6 +111,12 @@ class Note {
     return dayDuration;
   }
 
+  bool hasDifferentDate(Note note) {
+    return date.day != note.date.day ||
+        date.month != note.date.month ||
+        date.year != note.date.year;
+  }
+
   bool equalTo(Note other) {
     bool equalsExpression = (id == other.id) &&
         (mood == other.mood) &&
@@ -105,6 +128,16 @@ class Note {
 
     return equalsExpression;
   }
+
+  Map<String, dynamic> toMap() => {
+        Column.id.name: id,
+        Column.mood.name: mood,
+        Column.date.name: date,
+        Column.wakeupTime.name: wakeupTime,
+        Column.sleepTime.name: sleepTime,
+        Column.sleepLength.name: sleepLength,
+        Column.noteText.name: noteText,
+      };
 
   @override
   String toString() {

@@ -31,46 +31,44 @@ class NoteModel {
   });
 
   factory NoteModel.fromMap(Map<String, dynamic> json) => new NoteModel(
-        id: json[kIdColumn],
-        mood: json[kMoodColumn],
-        date: json[kDateColumn],
-        wakeupTime: json[kWakeupTimeColumn],
-        sleepTime: json[kSleepTimeColumn],
-        sleepLength: json[kSleepLengthColumn],
-        noteText: json[kNoteTextColumn],
+        id: json[Column.id.name],
+        mood: json[Column.mood.name],
+        date: json[Column.date.name],
+        wakeupTime: json[Column.wakeupTime.name],
+        sleepTime: json[Column.sleepTime.name],
+        sleepLength: json[Column.sleepLength.name],
+        noteText: json[Column.noteText.name],
       );
 
   Map<String, dynamic> toMap() => {
-        kIdColumn: id,
-        kMoodColumn: mood,
-        kDateColumn: date,
-        kWakeupTimeColumn: wakeupTime,
-        kSleepTimeColumn: sleepTime,
-        kSleepLengthColumn: sleepLength,
-        kNoteTextColumn: noteText,
+        Column.id.name: id,
+        Column.mood.name: mood,
+        Column.date.name: date,
+        Column.wakeupTime.name: wakeupTime,
+        Column.sleepTime.name: sleepTime,
+        Column.sleepLength.name: sleepLength,
+        Column.noteText.name: noteText,
       };
 
   bool equalTo(NoteModel other) {
-    bool equalsExpression = (id == other.id) &&
+    return (id == other.id) &&
         (mood == other.mood) &&
         (date == other.date) &&
         (wakeupTime == other.wakeupTime) &&
         (sleepTime == other.sleepTime) &&
         (sleepLength == other.sleepLength) &&
         (noteText == other.noteText);
-
-    return equalsExpression;
   }
 
   @override
   String toString() {
-    final String result = '$kIdColumn: $id,'
-        ' $kMoodColumn: $mood,'
-        ' $kDateColumn: $date'
-        ' $kWakeupTimeColumn: $wakeupTime,'
-        ' $kSleepTimeColumn: $sleepTime,'
-        ' $kSleepLengthColumn: $sleepLength,'
-        ' $kNoteTextColumn: $noteText';
+    final String result = '${Column.id.name}: $id,'
+        '${Column.mood.name}: $mood,'
+        '${Column.date.name}: $date'
+        '${Column.wakeupTime.name}: $wakeupTime,'
+        '${Column.sleepTime.name}: $sleepTime,'
+        '${Column.sleepLength.name}: $sleepLength,'
+        '${Column.noteText.name}: $noteText';
     return result;
   }
 }

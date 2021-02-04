@@ -45,3 +45,12 @@ bool _noteExists(Note note) {
     return false;
   }
 }
+
+String getOneLineString(String text) {
+  String copy = _getStringCopy(text);
+  return copy.replaceAll('\n', ' ');
+}
+
+String _getStringCopy(String text) {
+  return text.substring(0, text.length);
+}

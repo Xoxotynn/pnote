@@ -150,9 +150,11 @@ class _NoteScreenState extends State<NoteScreen> {
       child: CupertinoDatePicker(
         initialDateTime: note.wakeupTime,
         minuteInterval: kDefaultMinuteInterval,
+        maximumDate: note.sleepTime,
         onDateTimeChanged: (picked) {
           if (picked != null && picked != note.wakeupTime) {
             note.wakeupTime = picked;
+
             if (_differentDays(picked, note.date)) {
               note.date = picked;
             }

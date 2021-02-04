@@ -18,7 +18,7 @@ class DatabaseDao {
     int id = await db.update(
       kNotesTable,
       newNoteJson,
-      where: "$kIdColumn = ?",
+      where: "${Column.id.name} = ?",
       whereArgs: [newNote.id],
     );
     return id;
@@ -26,7 +26,7 @@ class DatabaseDao {
 
   deleteNote(int id) async {
     final db = await _databaseProvider.database;
-    db.delete(kNotesTable, where: "$kIdColumn = ?", whereArgs: [id]);
+    db.delete(kNotesTable, where: "${Column.id.name} = ?", whereArgs: [id]);
   }
 
   deleteAllNotes() async {
@@ -66,7 +66,7 @@ class DatabaseDao {
     final db = await _databaseProvider.database;
     var notesJsonList = await db.query(
       kNotesTable,
-      where: '$kIdColumn = ?',
+      where: '${Column.id.name} = ?',
       whereArgs: [id],
     );
 
