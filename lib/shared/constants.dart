@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:superellipse_shape/superellipse_shape.dart';
 
 const kDefaultMinuteInterval = 10;
 
@@ -12,6 +14,26 @@ const int kDefaultSleepLength = 8;
 
 final DateFormat kDefaultDateFormat = DateFormat.MMMd('en_US');
 final DateFormat kDefaultTimeFormat = DateFormat.jm();
+
+enum ShapeRadius {
+  small,
+  medium,
+  big,
+}
+
+extension ShapeRadiusExtension on ShapeRadius {
+  static Map<ShapeRadius, double> radiusMap = {
+    ShapeRadius.small: 24,
+    ShapeRadius.medium: 32,
+    ShapeRadius.big: 40,
+  };
+
+  double get value => radiusMap[this];
+  Radius get radius => Radius.circular(value);
+  BorderRadius get borderRadius => BorderRadius.circular(value);
+  SuperellipseShape get superellipse =>
+      SuperellipseShape(borderRadius: borderRadius);
+}
 
 const Map<String, int> months = {
   'января': 1,

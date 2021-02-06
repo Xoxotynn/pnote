@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pnote/shared/constants.dart';
 
 class TopClippedRect extends StatelessWidget {
   final Widget child;
@@ -10,7 +11,7 @@ class TopClippedRect extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.vertical(
-        top: Radius.circular(32),
+        top: ShapeRadius.medium.radius,
       ),
       child: Container(
         width: double.infinity,

@@ -58,7 +58,6 @@ class _NoteScreenState extends State<NoteScreen> {
               SizedBox(
                 height: 16,
               ),
-              //TODO Implement Date Pickers and Sleep Length Picker
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,21 +217,12 @@ class _NoteScreenState extends State<NoteScreen> {
 
   Widget _buildAppBar() {
     return AppBar(
-      toolbarHeight: 64,
       title: Text(
         note.getDateString(),
         style: TextStyle(
           color: Colors.white,
         ),
       ),
-      actions: [
-        IconButton(
-          icon: Icon(CupertinoIcons.arrow_down_to_line),
-          color: Colors.white,
-          iconSize: 32,
-          onPressed: () {},
-        ),
-      ],
     );
   }
 

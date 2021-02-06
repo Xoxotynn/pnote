@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pnote/shared/constants.dart';
 import 'package:superellipse_shape/superellipse_shape.dart';
 
 class TextCard extends StatelessWidget {
@@ -10,7 +11,7 @@ class TextCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4,
-      shape: SuperellipseShape(borderRadius: BorderRadius.circular(32.0)),
+      shape: ShapeRadius.medium.superellipse,
       child: Padding(
         padding: EdgeInsets.symmetric(
           vertical: 12,

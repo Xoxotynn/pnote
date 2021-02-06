@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pnote/shared/constants.dart';
 import 'package:pnote/ui_components/default_button.dart';
 import 'package:superellipse_shape/superellipse_shape.dart';
 
@@ -13,7 +14,7 @@ buildBottomSheet({
 
   showModalBottomSheet(
     context: context,
-    shape: SuperellipseShape(borderRadius: BorderRadius.circular(40)),
+    shape: ShapeRadius.big.superellipse,
     builder: (BuildContext builder) {
       return Container(
         padding: EdgeInsets.all(20),

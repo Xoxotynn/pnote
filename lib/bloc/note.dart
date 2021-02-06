@@ -27,7 +27,7 @@ class Note {
   void _initializeEmptyNote() {
     DateTime currentDate = DateTime.now();
     mood = kDefaultMood;
-    date = _getDateWithRoundedTime(currentDate);
+    date = currentDate;
     wakeupTime = _getDateWithRoundedTime(currentDate);
     sleepTime = _getDateWithRoundedTime(currentDate.add(Duration(hours: 16)));
     sleepLength = kDefaultSleepLength;
@@ -48,8 +48,8 @@ class Note {
     id = noteMapData[Column.id.name];
     mood = noteMapData[Column.mood.name];
     date = noteMapData[Column.date.name];
-    wakeupTime = noteMapData[Column.wakeupTime.name];
-    sleepTime = noteMapData[Column.sleepTime.name];
+    wakeupTime = _getDateWithRoundedTime(noteMapData[Column.wakeupTime.name]);
+    sleepTime = _getDateWithRoundedTime(noteMapData[Column.sleepTime.name]);
     sleepLength = noteMapData[Column.sleepLength.name];
     noteText = noteMapData[Column.noteText.name];
   }

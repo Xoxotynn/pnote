@@ -52,7 +52,7 @@ class StringNoteCodec {
       wakeupTime,
       _getSleepDateTime(data, wakeupTime),
       _getNoteText(data),
-      _getSleepLength(data)
+      _getSleepLength(data),
     ];
 
     return dataValues;
@@ -97,15 +97,15 @@ class StringNoteCodec {
   }
 
   String _getNoteText(String data) {
-    int metaDataEndIndex = data.indexOf('\n');
-    int noteTextEndIndex = data.lastIndexOf('\n');
+    int metaDataEndIndex = data.indexOf('\r\n');
+    int noteTextEndIndex = data.lastIndexOf('\r\n');
     String noteText = data.substring(metaDataEndIndex + 1, noteTextEndIndex);
     return noteText;
   }
 
   int _getSleepLength(String data) {
     String lengthString = _getSleepLengthString(data);
-    return int.parse(lengthString);
+    return num.parse(lengthString).round();
   }
 
   String _getDateString(String data) {
@@ -121,13 +121,13 @@ class StringNoteCodec {
   }
 
   String _getFirstRow(String data) {
-    int firstRowEndIndex = data.indexOf('\n');
+    int firstRowEndIndex = data.indexOf('\r\n');
     String firstRow = data.substring(0, firstRowEndIndex);
     return firstRow.trim();
   }
 
   String _getWakeupTimeString(String data) {
-    int noteTextStartIndex = data.indexOf('\n') + 1;
+    int noteTextStartIndex = data.indexOf('\r\n') + 1;
     return data.substring(noteTextStartIndex, noteTextStartIndex + 5);
   }
 
@@ -153,13 +153,13 @@ class StringNoteCodec {
   }
 
   String _getPenultRow(String data) {
-    List<String> dataList = data.split('\n');
+    List<String> dataList = data.split('\r\n');
     String penultRow = dataList[dataList.length - 2];
     return penultRow.trim();
   }
 
   String _getSleepLengthString(String data) {
-    int sleepLengthDataStartIndex = data.lastIndexOf('\n') + 1;
+    int sleepLengthDataStartIndex = data.lastIndexOf('\r\n') + 1;
     String sleepLengthData = data.substring(sleepLengthDataStartIndex);
     return sleepLengthData.trim();
   }
