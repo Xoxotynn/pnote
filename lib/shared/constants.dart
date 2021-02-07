@@ -22,13 +22,13 @@ enum ShapeRadius {
 }
 
 extension ShapeRadiusExtension on ShapeRadius {
-  static Map<ShapeRadius, double> radiusMap = {
+  static Map<ShapeRadius, double> _radiusMap = {
     ShapeRadius.small: 24,
     ShapeRadius.medium: 32,
     ShapeRadius.big: 40,
   };
 
-  double get value => radiusMap[this];
+  double get value => _radiusMap[this];
   Radius get radius => Radius.circular(value);
   BorderRadius get borderRadius => BorderRadius.circular(value);
   SuperellipseShape get superellipse =>

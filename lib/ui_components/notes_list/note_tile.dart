@@ -42,6 +42,7 @@ class NoteTile extends StatelessWidget {
               color: Colors.black54,
             ),
             onPressed: () {
+              //TODO Implement copying all note data
               var clipboardData = ClipboardData(text: note.noteText);
               var snackBar = buildSnackBar(
                 text: 'Note text copied to clipboard',

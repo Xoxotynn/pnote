@@ -2,18 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pnote/bloc/note.dart';
 import 'package:pnote/bloc/notes_bloc.dart';
-import 'package:pnote/note_string_converter/converter.dart';
 import 'package:pnote/screens/note_screen.dart';
-import 'package:pnote/shared/colors.dart';
 import 'package:pnote/shared/constants.dart';
 import 'package:pnote/shared/utils.dart';
 import 'package:pnote/ui_components/average_day_length_text.dart';
 import 'package:pnote/ui_components/mood_image.dart';
-import 'package:pnote/ui_components/note_form/note_text_field.dart';
 import 'package:pnote/ui_components/notes_list/notes_list.dart';
+import 'package:pnote/ui_components/popup_menu/menu_item_actions.dart';
+import 'package:pnote/ui_components/popup_menu/menu_items_builder.dart';
 import 'package:pnote/ui_components/top_clipped_rect.dart';
 import 'package:provider/provider.dart';
-import 'package:superellipse_shape/superellipse_shape.dart';
 
 class NotesListScreen extends StatelessWidget {
   @override
@@ -73,106 +71,10 @@ class NotesListScreen extends StatelessWidget {
             CupertinoIcons.ellipsis_vertical,
             size: 32,
           ),
-          onSelected: (value) {
-            switch (value) {
-              case 0:
-                {
-                  buildImportDialog(context, notesBloc);
-                }
-                break;
-
-              case 1:
-                {
-                  if (notes != null && notes.isNotEmpty)
-                    notes.forEach((note) => print(note));
-                }
-                break;
-
-              case 2:
-                {
-                  notesBloc.clear();
-                }
-                break;
-            }
+          onSelected: (MenuItemAction value) {
+            value.onSelected();
           },
-          itemBuilder: (context) => <PopupMenuEntry>[
-            PopupMenuItem(
-              value: 0,
-              child: Row(
-                children: [
-                  Icon(
-                    CupertinoIcons.arrow_down_to_line,
-                    color: Colors.black54,
-                    size: 26,
-                  ),
-                  SizedBox(
-                    width: 1,
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Import',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            PopupMenuItem(
-              value: 1,
-              child: Row(
-                children: [
-                  Icon(
-                    CupertinoIcons.share,
-                    color: Colors.black54,
-                    size: 26,
-                  ),
-                  SizedBox(
-                    width: 1,
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Export',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            PopupMenuDivider(),
-            PopupMenuItem(
-              value: 2,
-              child: Row(
-                children: [
-                  Icon(
-                    CupertinoIcons.delete,
-                    color: Colors.redAccent,
-                    size: 26,
-                  ),
-                  SizedBox(
-                    width: 1,
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Delete All',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.redAccent,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          itemBuilder: (_) => buildMenuItems(context, notes, notesBloc),
         ),
       ],
     );
@@ -190,40 +92,6 @@ class NotesListScreen extends StatelessWidget {
           CupertinoPageRoute(builder: (context) {
             return NoteScreen();
           }),
-        );
-      },
-    );
-  }
-
-  //TODO Redesign widget
-  buildImportDialog(BuildContext context, NotesBloc notesBloc) {
-    String noteData;
-    showCupertinoDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text('Your Notes'),
-          content: NoteTextField(
-            onChanged: (value) => noteData = value,
-          ),
-          actions: [
-            CupertinoDialogAction(
-              child: Text(
-                'Import',
-                style: TextStyle(
-                  color: kBlueAccentColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-              onPressed: () {
-                var notes = Converter.generateList(noteData);
-                notes.forEach((note) => notesBloc.add(note));
-                Navigator.pop(context);
-              },
-            ),
-          ],
         );
       },
     );
