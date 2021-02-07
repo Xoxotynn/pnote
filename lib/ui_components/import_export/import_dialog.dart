@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:pnote/bloc/notes_bloc.dart';
 import 'package:pnote/note_string_converter/converter.dart';
 import 'package:pnote/shared/colors.dart';
-import 'package:pnote/ui_components/note_form/note_text_field.dart';
+import 'package:pnote/ui_components/note_text_field.dart';
 
 //TODO Redesign widget
 buildImportDialog(BuildContext context, NotesBloc notesBloc) {

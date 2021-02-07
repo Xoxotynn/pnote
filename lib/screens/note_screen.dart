@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pnote/bloc/note.dart';
 import 'package:pnote/bloc/notes_bloc.dart';
-import 'package:pnote/shared/constants.dart';
 import 'package:pnote/shared/utils.dart';
-import 'package:pnote/ui_components/bottom_sheet.dart';
 import 'package:pnote/ui_components/default_button.dart';
+import 'package:pnote/ui_components/note_form/bottom_date_time_picker.dart';
+import 'package:pnote/ui_components/note_form/bottom_integer_picker.dart';
+import 'package:pnote/ui_components/note_text_field.dart';
 import 'package:pnote/ui_components/text_card.dart';
 import 'package:pnote/ui_components/note_form/mood_carousel_slider.dart';
-import 'package:pnote/ui_components/note_form/note_text_field.dart';
 import 'package:pnote/ui_components/top_clipped_rect.dart';
 import 'package:provider/provider.dart';
 
@@ -62,66 +61,20 @@ class _NoteScreenState extends State<NoteScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    children: [
-                      Text(
-                        'Wake Up',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          buildWakeupTimePicker(context, notesBloc);
-                        },
-                        child: TextCard(
-                          text: note.getWakeupTimeString(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        'Sleep',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          buildSleepTimePicker(context, notesBloc);
-                        },
-                        child: TextCard(
-                          text: note.getSleepTimeString(),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          buildSleepLengthPicker(context, notesBloc);
-                        },
-                        child: TextCard(
-                          text: note.getSleepLengthString(),
-                        ),
-                      ),
-                    ],
-                  ),
+                  wakeupPickerButton(context, notesBloc),
+                  sleepPickerButtons(context, notesBloc),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
+              NoteTextField(
+                margin: EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 24,
                 ),
-                child: NoteTextField(
-                  noteTextController: noteTextController,
-                  onChanged: (value) {
-                    note.noteText = value.trim();
-                    _updateNote(notesBloc);
-                  },
-                ),
+                noteTextController: noteTextController,
+                onChanged: (value) {
+                  note.noteText = value.trim();
+                  _updateNote(notesBloc);
+                },
               ),
               DefaultButton(
                 label: 'Save',
@@ -137,81 +90,95 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  buildWakeupTimePicker(BuildContext context, NotesBloc notesBloc) {
-    buildBottomSheet(
-      context: context,
-      title: 'Wake Up Time',
-      onComplete: () {
-        setState(() {});
-        _updateNote(notesBloc);
-        Navigator.pop(context);
-      },
-      child: CupertinoDatePicker(
-        initialDateTime: note.wakeupTime,
-        minuteInterval: kDefaultMinuteInterval,
-        maximumDate: note.sleepTime,
-        onDateTimeChanged: (picked) {
-          if (picked != null && picked != note.wakeupTime) {
-            note.wakeupTime = picked;
-
-            if (_differentDays(picked, note.date)) {
-              note.date = picked;
-            }
-          }
-        },
-      ),
+  Widget wakeupPickerButton(BuildContext context, NotesBloc notesBloc) {
+    return Column(
+      children: [
+        Text(
+          'Wake Up',
+          style: TextStyle(fontSize: 20),
+        ),
+        SizedBox(
+          height: 2,
+        ),
+        GestureDetector(
+          onTap: () {
+            buildWakeupTimePicker(context, notesBloc);
+          },
+          child: TextCard(
+            text: note.getWakeupTimeString(),
+          ),
+        ),
+      ],
     );
   }
 
-  bool _differentDays(DateTime date1, DateTime date2) {
-    return date1.day != date2.day ||
-        date1.month != date2.month ||
-        date1.year != date2.year;
+  Widget sleepPickerButtons(BuildContext context, NotesBloc notesBloc) {
+    return Column(
+      children: [
+        Text(
+          'Sleep',
+          style: TextStyle(fontSize: 20),
+        ),
+        SizedBox(
+          height: 2,
+        ),
+        GestureDetector(
+          onTap: () {
+            buildSleepTimePicker(context, notesBloc);
+          },
+          child: TextCard(
+            text: note.getSleepTimeString(),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            buildSleepLengthPicker(context, notesBloc);
+          },
+          child: TextCard(
+            text: note.getSleepLengthString(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  buildWakeupTimePicker(BuildContext context, NotesBloc notesBloc) {
+    buildBottomDateTimePicker(
+      context: context,
+      title: 'Wake Up Time',
+      initialDateTime: note.wakeupTime,
+      maxDateTime: note.sleepTime,
+      onSelectionComplete: (picked) {
+        note.wakeupTime = picked;
+        _updateDate(picked);
+        _updateNoteAndPop(context, notesBloc);
+      },
+    );
   }
 
   buildSleepTimePicker(BuildContext context, NotesBloc notesBloc) {
-    buildBottomSheet(
+    buildBottomDateTimePicker(
       context: context,
       title: 'Sleep Time',
-      onComplete: () {
-        setState(() {});
-        _updateNote(notesBloc);
-        Navigator.pop(context);
+      initialDateTime: note.sleepTime,
+      minDateTime: note.wakeupTime,
+      onSelectionComplete: (picked) {
+        note.sleepTime = picked;
+        _updateNoteAndPop(context, notesBloc);
       },
-      child: CupertinoDatePicker(
-        initialDateTime: note.sleepTime,
-        minuteInterval: kDefaultMinuteInterval,
-        minimumDate: note.wakeupTime,
-        onDateTimeChanged: (picked) {
-          if (picked != null && picked != note.sleepTime) {
-            note.sleepTime = picked;
-          }
-        },
-      ),
     );
   }
 
   buildSleepLengthPicker(BuildContext context, NotesBloc notesBloc) {
-    buildBottomSheet(
+    buildBottomIntegerPicker(
       context: context,
       title: 'Sleep Length',
-      onComplete: () {
-        setState(() {});
-        _updateNote(notesBloc);
-        Navigator.pop(context);
+      childCount: 25,
+      initialValue: note.sleepLength,
+      onSelectionComplete: (picked) {
+        note.sleepLength = picked;
+        _updateNoteAndPop(context, notesBloc);
       },
-      child: CupertinoPicker.builder(
-        itemExtent: 32,
-        childCount: 25,
-        scrollController:
-            FixedExtentScrollController(initialItem: note.sleepLength),
-        onSelectedItemChanged: (value) => note.sleepLength = value,
-        itemBuilder: (context, index) {
-          return Center(
-            child: Text(index.toString()),
-          );
-        },
-      ),
     );
   }
 
@@ -228,6 +195,16 @@ class _NoteScreenState extends State<NoteScreen> {
 
   bool _isNewNote() {
     return widget.note == null;
+  }
+
+  void _updateDate(DateTime newDate) {
+    if (differentDays(newDate, note.date)) note.date = newDate;
+  }
+
+  void _updateNoteAndPop(BuildContext context, NotesBloc notesBloc) {
+    _updateNote(notesBloc);
+    Navigator.pop(context);
+    setState(() {});
   }
 
   void _updateNote(NotesBloc notesBloc) async {
