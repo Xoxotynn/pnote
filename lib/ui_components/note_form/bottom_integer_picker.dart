@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pnote/ui_components/bottom_sheet.dart';
 
-buildBottomIntegerPicker({
+void buildBottomIntegerPicker({
   @required BuildContext context,
   String title,
   int childCount,
@@ -21,7 +21,10 @@ buildBottomIntegerPicker({
       onSelectedItemChanged: (value) => _selectedLength = value,
       itemBuilder: (context, index) {
         return Center(
-          child: Text(index.toString()),
+          child: Text(
+            index.toString(),
+            style: TextStyle(fontSize: 24),
+          ),
         );
       },
     ),

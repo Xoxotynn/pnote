@@ -15,17 +15,17 @@ const int kDefaultSleepLength = 8;
 final DateFormat kDefaultDateFormat = DateFormat.MMMd('en_US');
 final DateFormat kDefaultTimeFormat = DateFormat.jm();
 
-enum ShapeRadius {
+enum Dimension {
   small,
   medium,
   big,
 }
 
-extension ShapeRadiusExtension on ShapeRadius {
-  static Map<ShapeRadius, double> _radiusMap = {
-    ShapeRadius.small: 24,
-    ShapeRadius.medium: 32,
-    ShapeRadius.big: 40,
+extension DimensionExtension on Dimension {
+  static Map<Dimension, double> _radiusMap = {
+    Dimension.small: 24,
+    Dimension.medium: 32,
+    Dimension.big: 40,
   };
 
   double get value => _radiusMap[this];

@@ -44,7 +44,7 @@ class Note {
   }
 
   void _initializeNoteFromString(String data) {
-    final noteMapData = stringNote.decode(data);
+    final noteMapData = snCodec.decode(data);
     id = noteMapData[Column.id.name];
     mood = noteMapData[Column.mood.name];
     date = noteMapData[Column.date.name];

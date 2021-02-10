@@ -26,9 +26,7 @@ class NotesList extends StatelessWidget {
         },
       );
     } else {
-      return CupertinoActivityIndicator(
-        radius: 24,
-      );
+      return CupertinoActivityIndicator(radius: 24);
     }
   }
 }

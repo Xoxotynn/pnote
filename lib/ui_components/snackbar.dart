@@ -7,7 +7,7 @@ Widget buildSnackBar({@required String text, IconData trailingIcon}) {
     elevation: 0,
     margin: EdgeInsets.all(8),
     padding: EdgeInsets.symmetric(horizontal: 16),
-    shape: ShapeRadius.small.superellipse,
+    shape: Dimension.small.superellipse,
     behavior: SnackBarBehavior.floating,
     content: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

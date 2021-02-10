@@ -65,7 +65,7 @@ class NotesListScreen extends StatelessWidget {
     return AppBar(
       actions: [
         PopupMenuButton(
-          shape: ShapeRadius.small.superellipse,
+          shape: Dimension.small.superellipse,
           padding: EdgeInsets.zero,
           icon: Icon(
             CupertinoIcons.ellipsis_vertical,

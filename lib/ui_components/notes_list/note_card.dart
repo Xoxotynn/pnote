@@ -3,7 +3,6 @@ import 'package:pnote/bloc/note.dart';
 import 'package:pnote/shared/constants.dart';
 import 'package:pnote/shared/utils.dart';
 import 'package:pnote/ui_components/mood_image.dart';
-import 'package:superellipse_shape/superellipse_shape.dart';
 
 class NoteCard extends StatelessWidget {
   final Note note;
@@ -14,7 +13,7 @@ class NoteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4,
-      shape: ShapeRadius.small.superellipse,
+      shape: Dimension.small.superellipse,
       child: ListTile(
         leading: MoodImage(
           mood: note.mood,

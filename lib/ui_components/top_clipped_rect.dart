@@ -11,7 +11,7 @@ class TopClippedRect extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.vertical(
-        top: ShapeRadius.medium.radius,
+        top: Dimension.medium.radius,
       ),
       child: Container(
         width: double.infinity,

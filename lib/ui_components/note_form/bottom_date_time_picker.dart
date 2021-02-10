@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:pnote/shared/constants.dart';
 import 'package:pnote/ui_components/bottom_sheet.dart';
 
-buildBottomDateTimePicker({
+void buildBottomDateTimePicker({
   @required BuildContext context,
   String title,
   DateTime initialDateTime,

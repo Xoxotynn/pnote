@@ -17,7 +17,7 @@ import 'package:pnote/shared/constants.dart';
 /// '23:00 Duis aute irure dolor in reprehenderit'
 /// '8'
 
-const stringNote = StringNoteCodec();
+const snCodec = StringNoteCodec();
 
 class StringNoteCodec {
   const StringNoteCodec();

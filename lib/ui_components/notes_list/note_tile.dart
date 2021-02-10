@@ -5,6 +5,7 @@ import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:pnote/bloc/note.dart';
 import 'package:pnote/bloc/notes_bloc.dart';
+import 'package:pnote/note_string_converter/converter.dart';
 import 'package:pnote/screens/note_screen.dart';
 import 'package:pnote/ui_components/notes_list/note_card.dart';
 import 'package:pnote/ui_components/snackbar.dart';
@@ -25,8 +26,6 @@ class NoteTile extends StatelessWidget {
         horizontal: 22,
       ),
       child: FocusedMenuHolder(
-        menuOffset: 4,
-        animateMenuItems: true,
         menuWidth: MediaQuery.of(context).size.width * 0.5,
         menuItems: <FocusedMenuItem>[
           FocusedMenuItem(
@@ -42,18 +41,8 @@ class NoteTile extends StatelessWidget {
               color: Colors.black54,
             ),
             onPressed: () {
-              //TODO Implement copying all note data
-              var clipboardData = ClipboardData(text: note.noteText);
-              var snackBar = buildSnackBar(
-                text: 'Note text copied to clipboard',
-                trailingIcon: CupertinoIcons.doc_on_doc,
-              );
-
-              Clipboard.setData(clipboardData).then((_) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  snackBar,
-                );
-              });
+              var clipboardData = _getClipboardData([note]);
+              _copyToClipboard(context, clipboardData);
             },
           ),
           FocusedMenuItem(
@@ -88,5 +77,22 @@ class NoteTile extends StatelessWidget {
         child: NoteCard(note: note),
       ),
     );
+  }
+
+  ClipboardData _getClipboardData(List<Note> notes) {
+    return ClipboardData(text: converter.generateString(notes));
+  }
+
+  void _copyToClipboard(BuildContext context, ClipboardData data) {
+    Clipboard.setData(data).then((_) => _showSnackBar(context));
+  }
+
+  void _showSnackBar(BuildContext context) {
+    var snackBar = buildSnackBar(
+      text: 'Note copied to clipboard',
+      trailingIcon: CupertinoIcons.doc_on_doc,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

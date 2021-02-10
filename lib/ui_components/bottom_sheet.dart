@@ -14,7 +14,7 @@ buildBottomSheet({
 
   showModalBottomSheet(
     context: context,
-    shape: ShapeRadius.big.superellipse,
+    shape: Dimension.big.superellipse,
     builder: (BuildContext builder) {
       return Container(
         padding: EdgeInsets.all(20),

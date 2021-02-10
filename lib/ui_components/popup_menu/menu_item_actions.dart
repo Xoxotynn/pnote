@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pnote/bloc/note.dart';
 import 'package:pnote/bloc/notes_bloc.dart';
+import 'package:pnote/note_string_converter/converter.dart';
+import 'package:pnote/ui_components/import_export/export_dialog.dart';
 import 'package:pnote/ui_components/import_export/import_dialog.dart';
 
 abstract class MenuItemAction {
@@ -48,8 +50,9 @@ class ExportAction extends MenuItemAction {
     @required this.notes,
   }) : super(context);
 
+  //TODO Implement showing of export dialog
   @override
   void onSelected() {
-    if (notes != null && notes.isNotEmpty) notes.forEach((note) => print(note));
+    buildExportDialog(context, notes);
   }
 }

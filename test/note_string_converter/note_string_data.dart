@@ -32,15 +32,15 @@ void main() {
     ];
 
     test('Decoder test', () {
-      var noteData = stringNote.decode(data);
+      var noteData = snCodec.decode(data);
 
       expect(noteData.values, noteDataValues);
     });
 
     test('Encoder test', () {
-      var noteData = stringNote.decode(data);
+      var noteData = snCodec.decode(data);
 
-      expect(stringNote.encode(noteData), data);
+      expect(snCodec.encode(noteData), data);
     });
   });
 }

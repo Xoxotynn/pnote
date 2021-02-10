@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pnote/bloc/note.dart';
 import 'package:pnote/bloc/notes_bloc.dart';
+import 'package:pnote/shared/constants.dart';
 import 'package:pnote/shared/utils.dart';
 import 'package:pnote/ui_components/default_button.dart';
 import 'package:pnote/ui_components/note_form/bottom_date_time_picker.dart';
@@ -35,7 +36,6 @@ class _NoteScreenState extends State<NoteScreen> {
   Widget build(BuildContext context) {
     final NotesBloc notesBloc = Provider.of<NotesBloc>(context);
 
-    //TODO Refactor and deconstruct this class with smaller components
     return Scaffold(
       appBar: _buildAppBar(),
       body: TopClippedRect(
@@ -54,17 +54,8 @@ class _NoteScreenState extends State<NoteScreen> {
                 },
               ),
               Divider(),
-              SizedBox(
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  wakeupPickerButton(context, notesBloc),
-                  sleepPickerButtons(context, notesBloc),
-                ],
-              ),
+              SizedBox(height: 16),
+              _timeValuePickerButtons(context, notesBloc),
               NoteTextField(
                 margin: EdgeInsets.symmetric(
                   horizontal: 12,
@@ -90,59 +81,56 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  Widget wakeupPickerButton(BuildContext context, NotesBloc notesBloc) {
-    return Column(
+  Widget _timeValuePickerButtons(BuildContext context, NotesBloc notesBloc) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Wake Up',
-          style: TextStyle(fontSize: 20),
-        ),
-        SizedBox(
-          height: 2,
-        ),
-        GestureDetector(
-          onTap: () {
-            buildWakeupTimePicker(context, notesBloc);
-          },
-          child: TextCard(
-            text: note.getWakeupTimeString(),
-          ),
-        ),
+        _wakeupTimePickerButton(context, notesBloc),
+        _sleepPickerButtons(context, notesBloc),
       ],
     );
   }
 
-  Widget sleepPickerButtons(BuildContext context, NotesBloc notesBloc) {
+  Widget _wakeupTimePickerButton(BuildContext context, NotesBloc notesBloc) {
+    return TextCard(
+      title: 'Wake Up',
+      text: note.getWakeupTimeString(),
+      onTap: () {
+        _buildWakeupTimePicker(context, notesBloc);
+      },
+    );
+  }
+
+  Widget _sleepPickerButtons(BuildContext context, NotesBloc notesBloc) {
     return Column(
       children: [
-        Text(
-          'Sleep',
-          style: TextStyle(fontSize: 20),
-        ),
-        SizedBox(
-          height: 2,
-        ),
-        GestureDetector(
-          onTap: () {
-            buildSleepTimePicker(context, notesBloc);
-          },
-          child: TextCard(
-            text: note.getSleepTimeString(),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            buildSleepLengthPicker(context, notesBloc);
-          },
-          child: TextCard(
-            text: note.getSleepLengthString(),
-          ),
-        ),
+        _sleepTimePickerButton(context, notesBloc),
+        _sleepLengthPickerButton(context, notesBloc),
       ],
     );
   }
 
-  buildWakeupTimePicker(BuildContext context, NotesBloc notesBloc) {
+  Widget _sleepTimePickerButton(BuildContext context, NotesBloc notesBloc) {
+    return TextCard(
+      title: 'Sleep',
+      text: note.getSleepTimeString(),
+      onTap: () {
+        _buildSleepTimePicker(context, notesBloc);
+      },
+    );
+  }
+
+  Widget _sleepLengthPickerButton(BuildContext context, NotesBloc notesBloc) {
+    return TextCard(
+      text: note.getSleepLengthString(),
+      onTap: () {
+        _buildSleepLengthPicker(context, notesBloc);
+      },
+    );
+  }
+
+  void _buildWakeupTimePicker(BuildContext context, NotesBloc notesBloc) {
     buildBottomDateTimePicker(
       context: context,
       title: 'Wake Up Time',
@@ -156,7 +144,7 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  buildSleepTimePicker(BuildContext context, NotesBloc notesBloc) {
+  void _buildSleepTimePicker(BuildContext context, NotesBloc notesBloc) {
     buildBottomDateTimePicker(
       context: context,
       title: 'Sleep Time',
@@ -169,11 +157,11 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
-  buildSleepLengthPicker(BuildContext context, NotesBloc notesBloc) {
+  void _buildSleepLengthPicker(BuildContext context, NotesBloc notesBloc) {
     buildBottomIntegerPicker(
       context: context,
       title: 'Sleep Length',
-      childCount: 25,
+      childCount: kMaxSleepLength + 1,
       initialValue: note.sleepLength,
       onSelectionComplete: (picked) {
         note.sleepLength = picked;
@@ -204,7 +192,6 @@ class _NoteScreenState extends State<NoteScreen> {
   void _updateNoteAndPop(BuildContext context, NotesBloc notesBloc) {
     _updateNote(notesBloc);
     Navigator.pop(context);
-    setState(() {});
   }
 
   void _updateNote(NotesBloc notesBloc) async {
@@ -214,5 +201,6 @@ class _NoteScreenState extends State<NoteScreen> {
       int id = await notesBloc.add(note);
       note.id = id;
     }
+    setState(() {});
   }
 }

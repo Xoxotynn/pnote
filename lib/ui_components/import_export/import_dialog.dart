@@ -15,7 +15,7 @@ buildImportDialog(BuildContext context, NotesBloc notesBloc) {
         title: Text(
           'Your Notes',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 20,
           ),
         ),
         content: NoteTextField(
@@ -32,8 +32,7 @@ buildImportDialog(BuildContext context, NotesBloc notesBloc) {
               ),
             ),
             onPressed: () {
-              var notes = Converter.generateList(noteData);
-              notes.forEach((note) => notesBloc.add(note));
+              _decodeAndImportNotes(noteData, notesBloc);
               Navigator.pop(context);
             },
           ),
@@ -41,4 +40,9 @@ buildImportDialog(BuildContext context, NotesBloc notesBloc) {
       );
     },
   );
+}
+
+void _decodeAndImportNotes(String data, NotesBloc notesBloc) {
+  var notes = converter.generateNotesList(data);
+  notes.forEach((note) => notesBloc.add(note));
 }
