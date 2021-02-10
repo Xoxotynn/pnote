@@ -18,7 +18,7 @@ class Converter {
   String generateString(List<Note> notes) {
     String result = '';
     if (notes != null) {
-      notes.forEach((note) => result += _tryEncode(note));
+      notes.reversed.forEach((note) => result += _tryEncode(note));
     }
 
     return result.trim();

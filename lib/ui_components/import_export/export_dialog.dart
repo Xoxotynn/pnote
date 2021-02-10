@@ -3,45 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pnote/bloc/note.dart';
 import 'package:pnote/note_string_converter/converter.dart';
-import 'package:pnote/shared/colors.dart';
+import 'package:pnote/shared/constants.dart';
+import 'package:pnote/ui_components/dialog_window.dart';
 import 'package:pnote/ui_components/snackbar.dart';
 
-//TODO Redesign widget
-buildExportDialog(BuildContext context, List<Note> notes) {
+void buildExportDialog(BuildContext context, List<Note> notes) {
   String notesString = _encodeNotes(notes);
-  showCupertinoDialog(
+  buildDialog(
     context: context,
-    barrierDismissible: true,
-    builder: (context) {
-      return CupertinoAlertDialog(
-        title: Text(
-          'Your Notes',
-          style: TextStyle(
-            fontSize: 20,
-          ),
+    title: 'Your Notes',
+    content: SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Text(
+        notesString,
+        style: TextStyle(fontSize: 16),
+      ),
+    ),
+    actions: [
+      TextButton(
+        child: Text(
+          'Cancel',
+          style: kSecondaryActionTextStyle,
         ),
-        content: Text(
-          notesString,
-          style: TextStyle(fontSize: 16),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      TextButton(
+        child: Text(
+          'Copy',
+          style: kMainActionTextStyle,
         ),
-        actions: [
-          CupertinoDialogAction(
-            child: Text(
-              'Copy',
-              style: TextStyle(
-                color: kBlueAccentColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            onPressed: () {
-              _copyToClipboard(context, notesString);
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      );
-    },
+        onPressed: () {
+          _copyToClipboard(context, notesString);
+          Navigator.pop(context);
+        },
+      ),
+    ],
   );
 }
 

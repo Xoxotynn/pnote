@@ -1,44 +1,40 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:pnote/bloc/notes_bloc.dart';
 import 'package:pnote/note_string_converter/converter.dart';
-import 'package:pnote/shared/colors.dart';
+import 'package:pnote/shared/constants.dart';
+import 'package:pnote/ui_components/dialog_window.dart';
 import 'package:pnote/ui_components/note_text_field.dart';
 
-//TODO Redesign widget
-buildImportDialog(BuildContext context, NotesBloc notesBloc) {
+void buildImportDialog(BuildContext context, NotesBloc notesBloc) {
   String noteData;
-  showCupertinoDialog(
+  buildDialog(
     context: context,
-    barrierDismissible: true,
-    builder: (context) {
-      return CupertinoAlertDialog(
-        title: Text(
-          'Your Notes',
-          style: TextStyle(
-            fontSize: 20,
-          ),
+    title: 'Your Notes',
+    content: NoteTextField(
+      onChanged: (value) => noteData = value,
+    ),
+    actions: [
+      TextButton(
+        child: Text(
+          'Cancel',
+          style: kSecondaryActionTextStyle,
         ),
-        content: NoteTextField(
-          onChanged: (value) => noteData = value,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      TextButton(
+        child: Text(
+          'Import',
+          style: kMainActionTextStyle,
         ),
-        actions: [
-          CupertinoDialogAction(
-            child: Text(
-              'Import',
-              style: TextStyle(
-                color: kBlueAccentColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            onPressed: () {
-              _decodeAndImportNotes(noteData, notesBloc);
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      );
-    },
+        onPressed: () {
+          _decodeAndImportNotes(noteData, notesBloc);
+          Navigator.pop(context);
+        },
+      ),
+    ],
   );
 }
 

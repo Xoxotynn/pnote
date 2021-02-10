@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pnote/shared/colors.dart';
 import 'package:superellipse_shape/superellipse_shape.dart';
 
 const kDefaultMinuteInterval = 10;
@@ -14,6 +16,10 @@ const int kDefaultSleepLength = 8;
 
 final DateFormat kDefaultDateFormat = DateFormat.MMMd('en_US');
 final DateFormat kDefaultTimeFormat = DateFormat.jm();
+
+final kMainActionTextStyle = TextStyle(fontSize: 20, color: kBlueAccentColor);
+final kSecondaryActionTextStyle =
+    TextStyle(fontSize: 20, color: Colors.black54);
 
 enum Dimension {
   small,
