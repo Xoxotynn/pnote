@@ -25,7 +25,11 @@ class Converter {
   }
 
   List<String> _getNoteDataList(String data) {
-    return data.trim().split('\r\n\r\n');
+    return _clearString(data).split('\n\n');
+  }
+
+  String _clearString(String data) {
+    return data.replaceAll('\r', '');
   }
 
   List<Note> _convertNoteDataToNotes(List<String> data) {

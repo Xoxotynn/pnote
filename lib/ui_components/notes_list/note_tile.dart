@@ -28,54 +28,53 @@ class NoteTile extends StatelessWidget {
       child: FocusedMenuHolder(
         menuWidth: MediaQuery.of(context).size.width * 0.5,
         menuItems: <FocusedMenuItem>[
-          FocusedMenuItem(
-            title: Text(
-              'Copy',
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 18,
-              ),
-            ),
-            trailingIcon: Icon(
-              CupertinoIcons.doc_on_doc,
-              color: Colors.black54,
-            ),
+          _buildMenuItem(
+            title: 'Copy',
+            icon: CupertinoIcons.doc_on_doc,
             onPressed: () {
               var clipboardData = _getClipboardData([note]);
               _copyToClipboard(context, clipboardData);
             },
           ),
-          FocusedMenuItem(
-            title: Text(
-              'Delete',
-              style: TextStyle(
-                color: Colors.redAccent,
-                fontSize: 18,
-              ),
-            ),
-            trailingIcon: Icon(
-              CupertinoIcons.delete,
-              color: Colors.redAccent,
-            ),
-            onPressed: () {
-              notesBloc.delete(note);
-            },
+          _buildMenuItem(
+            title: 'Delete',
+            icon: CupertinoIcons.delete,
+            destructive: true,
+            onPressed: () => notesBloc.delete(note),
           ),
         ],
         onPressed: () {
           Navigator.push(
             context,
             CupertinoPageRoute(
-              builder: (context) {
-                return NoteScreen(
-                  note: note,
-                );
-              },
+              builder: (context) => NoteScreen(note: note),
             ),
           );
         },
         child: NoteCard(note: note),
       ),
+    );
+  }
+
+  FocusedMenuItem _buildMenuItem({
+    String title,
+    IconData icon,
+    bool destructive = false,
+    Function onPressed,
+  }) {
+    return FocusedMenuItem(
+      title: Text(
+        title,
+        style: TextStyle(
+          color: destructive ? Colors.redAccent : Colors.black87,
+          fontSize: 18,
+        ),
+      ),
+      trailingIcon: Icon(
+        icon,
+        color: destructive ? Colors.redAccent : Colors.black54,
+      ),
+      onPressed: onPressed,
     );
   }
 

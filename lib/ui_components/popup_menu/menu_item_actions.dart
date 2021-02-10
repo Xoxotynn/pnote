@@ -50,7 +50,6 @@ class ExportAction extends MenuItemAction {
     @required this.notes,
   }) : super(context);
 
-  //TODO Implement showing of export dialog
   @override
   void onSelected() {
     buildExportDialog(context, notes);
