@@ -10,7 +10,6 @@ void buildDialog({
 }) {
   showDialog(
     context: context,
-    barrierDismissible: true,
     builder: (context) {
       return AlertDialog(
         insetPadding: EdgeInsets.all(20),
